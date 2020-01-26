@@ -1,14 +1,14 @@
-package yetanotherdima.instaclone
+package yetanotherdima.instaclone.activities
 
 import android.os.Bundle
 import android.util.Log
+import yetanotherdima.instaclone.R
 
-class FavoriteActivity : BaseActivity(3) {
-    private val TAG = "FavoriteActivity"
-
+class ShareActivity : BaseActivity(2) {
+    private val TAG = "ShareActivity"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_favorite)
+        setContentView(R.layout.activity_share)
         initBottomNavigation()
         Log.d(TAG, "onCreate: ")
     }

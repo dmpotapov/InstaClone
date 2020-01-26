@@ -1,4 +1,4 @@
-package yetanotherdima.instaclone
+package yetanotherdima.instaclone.activities
 
 import android.content.Intent
 import android.util.Log
@@ -6,6 +6,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.size
 import kotlinx.android.synthetic.main.bottom_nav_view.*
+import yetanotherdima.instaclone.*
 
 abstract class BaseActivity(val navNumber: Int?) : AppCompatActivity() {
     private val TAG = "BaseActivity"
