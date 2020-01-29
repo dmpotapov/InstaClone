@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">InstaClone</string>
-    <string name="sign_up_caption">Don\'t have an account? <b>Sign up.</b></string>
+    <string name="sign_up_caption">Don\'t have an account?
+        <b>Sign up.</b>
+    </string>
 </resources>
