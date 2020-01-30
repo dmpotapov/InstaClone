@@ -19,4 +19,4 @@ class ValueEventListenerAdapter(private val handler: (DataSnapshot) -> Unit) : V
     }
 }
 
-fun Context.showToast(text: String, length: Int): Unit = Toast.makeText(this, text, length).show();
+fun Context.showToast(text: String, length: Int = Toast.LENGTH_SHORT): Unit = Toast.makeText(this, text, length).show();

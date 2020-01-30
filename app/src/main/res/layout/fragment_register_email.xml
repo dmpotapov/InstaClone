@@ -42,6 +42,7 @@
         />
 
         <Button
+            android:id="@+id/continue_btn"
             android:layout_width="match_parent"
             style="@style/login_btn"
             android:text="Continue"

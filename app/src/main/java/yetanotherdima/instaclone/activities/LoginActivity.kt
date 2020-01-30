@@ -32,6 +32,8 @@ class LoginActivity : AppCompatActivity(), KeyboardVisibilityEventListener, Text
         login_btn.isEnabled = false
         login_btn.setOnClickListener(this)
 
+        sign_up_caption.setOnClickListener(this)
+
         mAuth = FirebaseAuth.getInstance()
     }
 
@@ -55,12 +57,19 @@ class LoginActivity : AppCompatActivity(), KeyboardVisibilityEventListener, Text
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { }
 
-    override fun onClick(v: View?) {
-        if (!fieldsAreNotEmpty()) {
-            showToast("Please set both login and password", Toast.LENGTH_SHORT);
-        }
-        else {
-            mAuth.signInWithEmailAndPassword(login_email_field.text.toString(), login_password_field.text.toString()).addOnCompleteListener(this)
+    override fun onClick(v: View) {
+        when (v.id) {
+            R.id.login_btn -> {
+                if (!fieldsAreNotEmpty()) {
+                    showToast("Please set both login and password", Toast.LENGTH_SHORT);
+                }
+                else {
+                    mAuth.signInWithEmailAndPassword(login_email_field.text.toString(), login_password_field.text.toString()).addOnCompleteListener(this)
+                }
+            }
+            R.id.sign_up_caption -> {
+                startActivity(Intent(this, RegisterActivity::class.java))
+            }
         }
     }
 
