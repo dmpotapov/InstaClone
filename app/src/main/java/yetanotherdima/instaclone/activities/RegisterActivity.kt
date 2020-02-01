@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.SignInMethodQueryResult
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_edit_profile.*
@@ -20,6 +22,7 @@ import kotlinx.android.synthetic.main.fragment_register_email.*
 import kotlinx.android.synthetic.main.fragment_register_user_data.*
 import yetanotherdima.instaclone.R
 import yetanotherdima.instaclone.models.User
+import yetanotherdima.instaclone.utils.onTaskComplete
 import yetanotherdima.instaclone.utils.showToast
 import java.util.zip.Inflater
 
@@ -42,14 +45,27 @@ class RegisterActivity : AppCompatActivity(), EmailFragment.Listener, UserDataFr
     }
 
     override fun onContinue(email: String) {
-        if (email.isEmpty()) {
-            showToast("Email is empty")
+        if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            showToast("Please fill correct email address")
         }
         else {
             mEmail = email!!
-            supportFragmentManager.beginTransaction().replace(R.id.register_frame_layout, UserDataFragment())
-                .addToBackStack(null)
-                .commit()
+            mAuth.fetchSignInMethodsForEmail(email).addOnCompleteListener(
+                onTaskComplete({
+                    if ((it as Task<SignInMethodQueryResult>).result?.signInMethods?.isNotEmpty() != false) {
+                        showToast("This email already exists")
+                    }
+                    else {
+                        supportFragmentManager.beginTransaction().replace(R.id.register_frame_layout, UserDataFragment())
+                            .addToBackStack(null)
+                            .commit()
+                    }
+                },
+                {
+                    showToast("something went wrong")
+                    Log.d(TAG, "onContinue: ${it.exception.toString()}")
+                })
+            )
         }
     }
 
@@ -62,34 +78,26 @@ class RegisterActivity : AppCompatActivity(), EmailFragment.Listener, UserDataFr
             showToast("Please fill all fields")
         }
         else {
-            mAuth.createUserWithEmailAndPassword(mEmail, password).addOnCompleteListener {
-                it.onTaskComplete({
+            mAuth.createUserWithEmailAndPassword(mEmail, password).addOnCompleteListener(
+                onTaskComplete({
                     val user = User(fullname, username, "", "", mEmail, "")
                     val ref = mDb.child("users").child((it as Task<AuthResult>).result!!.user!!.uid)
-                    ref.setValue(user).addOnCompleteListener {
-                        it.onTaskComplete({
+                    ref.setValue(user).addOnCompleteListener(
+                        onTaskComplete({
                             startActivity(Intent(this, HomeActivity::class.java))
                             finish()
                         }, {
                             showToast("Unable to create the profile")
                             Log.d(TAG, "onRegister: ", it.exception)
                         })
-                    }
-                }, {
+                    )
+                },
+                {
                     showToast("Unable to create the user")
                     Log.d(TAG, "onRegister: ", it.exception)
                 })
-            }
+            )
         }
-    }
-}
-
-fun Task<*>.onTaskComplete(resolve: (Task<*>) -> Unit, reject: (Task<*>) -> Unit) {
-    if (this.isSuccessful()) {
-        resolve(this)
-    }
-    else {
-        reject(this)
     }
 }
 

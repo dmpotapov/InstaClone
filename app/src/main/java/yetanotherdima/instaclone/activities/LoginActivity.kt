@@ -26,7 +26,7 @@ class LoginActivity : AppCompatActivity(), KeyboardVisibilityEventListener, Text
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        KeyboardVisibilityEvent.setEventListener(this, this)
+
         login_email_field.addTextChangedListener(this)
         login_password_field.addTextChangedListener(this)
         login_btn.isEnabled = false
@@ -39,10 +39,8 @@ class LoginActivity : AppCompatActivity(), KeyboardVisibilityEventListener, Text
 
     override fun onVisibilityChanged(isOpen: Boolean) {
         if (isOpen) {
-            login_scroll_view.scrollTo(0, login_scroll_view.bottom);
             sign_up_caption.visibility = View.GONE
         } else {
-            login_scroll_view.scrollTo(0, login_scroll_view.top)
             sign_up_caption.visibility = View.VISIBLE
         }
     }
