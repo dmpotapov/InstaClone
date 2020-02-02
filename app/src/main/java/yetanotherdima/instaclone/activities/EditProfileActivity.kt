@@ -44,7 +44,7 @@ class EditProfileActivity : AppCompatActivity(), PasswordDialog.Listener {
         val user = mAuth.currentUser
 
         mDatabase.child("users").child(user!!.uid).addListenerForSingleValueEvent(ValueEventListenerAdapter({ data: DataSnapshot ->
-            edit_profile_progress_bar.animate().alpha(0.0f).setDuration(300).setListener(object : Animator.AnimatorListener {
+            edit_profile_scroll_view.animate().alpha(1.0f).setDuration(300).setListener(object : Animator.AnimatorListener {
                 override fun onAnimationRepeat(animation: Animator?) { }
 
                 override fun onAnimationEnd(animation: Animator?) {
