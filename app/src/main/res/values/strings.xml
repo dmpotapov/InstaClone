@@ -3,4 +3,5 @@
     <string name="sign_up_caption">Don\'t have an account?
         <b>Sign up.</b>
     </string>
+    <string name="please_enter_the_password">Please enter the password</string>
 </resources>

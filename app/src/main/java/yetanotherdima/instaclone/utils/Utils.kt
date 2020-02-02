@@ -22,12 +22,12 @@ class ValueEventListenerAdapter(private val handler: (DataSnapshot) -> Unit) : V
 
 fun Context.showToast(text: String, length: Int = Toast.LENGTH_SHORT): Unit = Toast.makeText(this, text, length).show();
 
-fun onTaskComplete(resolve: (Task<*>) -> Unit, reject: (Task<*>) -> Unit) : ((Task<*>) -> Unit) {
+fun onTaskComplete(resolve: (Task<*>) -> Unit, reject: ((Task<*>) -> Unit)?) : ((Task<*>) -> Unit) {
     return {
         if (it.isSuccessful()) {
             resolve(it)
         }
-        else {
+        else if (reject != null) {
             reject(it)
         }
     }
