@@ -1,9 +1,11 @@
 package yetanotherdima.instaclone.activities
 
+import android.animation.Animator
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.util.Patterns
+import android.view.View
 import android.widget.TextView
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
@@ -28,7 +30,6 @@ class EditProfileActivity : AppCompatActivity(), PasswordDialog.Listener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_profile)
         Log.d(TAG, "onCreate: ")
-
         edit_profile_close_btn.setOnClickListener{
             finish()
         }
@@ -43,6 +44,19 @@ class EditProfileActivity : AppCompatActivity(), PasswordDialog.Listener {
         val user = mAuth.currentUser
 
         mDatabase.child("users").child(user!!.uid).addListenerForSingleValueEvent(ValueEventListenerAdapter({ data: DataSnapshot ->
+            edit_profile_progress_bar.animate().alpha(0.0f).setDuration(300).setListener(object : Animator.AnimatorListener {
+                override fun onAnimationRepeat(animation: Animator?) { }
+
+                override fun onAnimationEnd(animation: Animator?) {
+                    edit_profile_progress_bar.visibility = View.GONE
+                }
+
+                override fun onAnimationCancel(animation: Animator?) { }
+
+                override fun onAnimationStart(animation: Animator?) { }
+            })
+
+
             mUser = data.getValue(User::class.java)!!
 
             name_field.setText(mUser.name, TextView.BufferType.EDITABLE)
