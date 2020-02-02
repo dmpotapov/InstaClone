@@ -115,6 +115,7 @@ class EmailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        continue_btn.setValidatedTextViews(register_email_input)
         continue_btn.setOnClickListener {
             mListener.onContinue(register_email_input.text.toString())
         }
@@ -140,6 +141,10 @@ class UserDataFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        register_btn.setValidatedTextViews(register_fullname_input,
+                                            register_username_input,
+                                            register_password_input)
 
         register_btn.setOnClickListener {
             mListener.onRegister(register_fullname_input.text.toString(),

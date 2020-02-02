@@ -58,7 +58,7 @@
             app:layout_constraintTop_toBottomOf="@id/register_fullname_input"
         />
 
-        <Button
+        <yetanotherdima.instaclone.views.BasicValidateAwareButton
             android:id="@+id/register_btn"
             android:layout_width="match_parent"
             style="@style/login_btn"

@@ -1,5 +1,6 @@
 package yetanotherdima.instaclone.activities
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -17,7 +18,7 @@ import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventList
 import yetanotherdima.instaclone.R
 import yetanotherdima.instaclone.utils.showToast
 
-class LoginActivity : AppCompatActivity(), KeyboardVisibilityEventListener, TextWatcher, View.OnClickListener,
+class LoginActivity : AppCompatActivity(), KeyboardVisibilityEventListener, View.OnClickListener,
     OnCompleteListener<AuthResult> {
     private val TAG = "LoginActivity"
     private lateinit var mAuth: FirebaseAuth
@@ -27,12 +28,11 @@ class LoginActivity : AppCompatActivity(), KeyboardVisibilityEventListener, Text
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        login_email_field.addTextChangedListener(this)
-        login_password_field.addTextChangedListener(this)
-        login_btn.isEnabled = false
+        login_btn.setValidatedTextViews(login_email_field, login_password_field)
         login_btn.setOnClickListener(this)
-
         sign_up_caption.setOnClickListener(this)
+
+        KeyboardVisibilityEvent.setEventListener(this, this)
 
         mAuth = FirebaseAuth.getInstance()
     }
@@ -45,15 +45,7 @@ class LoginActivity : AppCompatActivity(), KeyboardVisibilityEventListener, Text
         }
     }
 
-    override fun afterTextChanged(s: Editable?) {
-        login_btn.isEnabled = fieldsAreNotEmpty()
-    }
-
     private fun fieldsAreNotEmpty() = login_email_field.text.isNotEmpty() && login_password_field.text.isNotEmpty()
-
-    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
-
-    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { }
 
     override fun onClick(v: View) {
         when (v.id) {
